@@ -27,7 +27,11 @@ class Template(tk.Frame):
         self.checkbox_label = tk.Label(self, image=self.unchecked_image)
         self.checkbox_label.grid(row=0, column=0, padx=0, pady=50)
         self.checkbox_label.bind("<Button-1>", self.toggle_checkbox)
-        print(self.checkbox_var.get())
+        self.text = tk.Text(self, height=0.1, width=20, font=("Times New Roman", 30))
+        self.text.grid(row=0, column=1, padx=10, pady=10)
+
+
+
 
     def toggle_checkbox(self, event):
         if self.checkbox_var.get():
