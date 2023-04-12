@@ -1,43 +1,29 @@
 import tkinter as tk
-from tkinter import ttk
+import UI.CheckBox as CheckBoxModule
+from Database import DBTasks
 
 
 class Template(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
         self.master = master
         self.master.title("Taskify")
         self.master.geometry("1280x720")
         self.master.iconbitmap("Resources/check.ico")
-
         self.setupUi()
         self.pack()
 
-
     def setupUi(self):
         # Define user interface elements here
+        checkBoxList = []
+        for i in range(3):
+            self.addCheckBox(i, checkBoxList)
 
-        # Checkbox
-        self.checkbox_var = tk.BooleanVar()
-        original_unchecked_image = tk.PhotoImage(file="Resources/unchecked.png")
-        original_checked_image = tk.PhotoImage(file="Resources/checked.png")
-        scale_factor = 10
-        self.checked_image = original_checked_image.subsample(scale_factor, scale_factor)
-        self.unchecked_image = original_unchecked_image.subsample(scale_factor, scale_factor)
-        self.checkbox_label = tk.Label(self, image=self.unchecked_image)
-        self.checkbox_label.grid(row=0, column=0, padx=0, pady=50)
-        self.checkbox_label.bind("<Button-1>", self.toggle_checkbox)
-        self.text = tk.Text(self, height=0.1, width=20, font=("Times New Roman", 30))
-        self.text.grid(row=0, column=1, padx=10, pady=10)
+        DBTasks.DBTasks.__init__(self)
+        tasks = DBTasks.DBTasks.getTasks(self, 1)
+        print(tasks)
 
-
-
-
-    def toggle_checkbox(self, event):
-        if self.checkbox_var.get():
-            self.checkbox_label.configure(image=self.unchecked_image)
-            self.checkbox_var.set(False)
-        else:
-            self.checkbox_label.configure(image=self.checked_image)
-            self.checkbox_var.set(True)
-
+    def addCheckBox(self, index, checkBoxList):
+        self.checkbox = CheckBoxModule.CheckBox(self, index=index)
+        self.checkbox.grid(row=index, column=0)
+        checkBoxList.append(self.checkbox)
